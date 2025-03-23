@@ -36,8 +36,19 @@ class Program
             Console.WriteLine("\nQuản lý danh sách việc cần làm:");
             Console.WriteLine("1. Thêm việc cần làm");
             Console.WriteLine("2. Hiển thị danh sách");
-            Console.WriteLine("3. Thoát");
+            Console.WriteLine("Nhấn 'q' hoặc ESC để thoát");
             Console.Write("Chọn một tùy chọn: ");
+
+            
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            Console.WriteLine();
+            
+            if (keyInfo.Key == ConsoleKey.Q || keyInfo.Key == ConsoleKey.Escape)
+            {
+                running = false;
+                break;
+            }
+
             
             string luaChon = Console.ReadLine();
             switch (luaChon)
@@ -82,5 +93,54 @@ class Program
         {
             todo.HienThiThongTin();
         }
+    }
+static void CapNhatCongViec()
+    {
+        HienThiDanhSach();
+        Console.Write("Nhập số thứ tự công việc cần cập nhật: ");
+        int stt = int.Parse(Console.ReadLine()) - 1;
+        if (stt < 0 || stt >= danhSachTodo.Count)
+        {
+            Console.Write("Nhập tên công việc mới: ");
+            danhSachTodo[stt].Ten = Console.ReadLine();
+            Console.Write("Nhập độ ưu tiên mới (1-5): ");
+            danhSachTodo[stt].DoUuTien = int.Parse(Console.ReadLine());
+            Console.Write("Nhập mô tả mới: ");
+            danhSachTodo[stt].MoTa = Console.ReadLine();
+            Console.Write("Nhập trạng thái mới (0: Hủy, 1: Hoàn thành, 2: Chờ): ");
+            danhSachTodo[stt].TrangThai = int.Parse(Console.ReadLine());
+            Console.WriteLine("\nCông việc đã được cập nhật!");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Số thứ tự không hợp lệ!");
+    }
+}
+
+    static void XoaCongViec()
+    {
+        HienThiDanhSach();
+        Console.Write("Nhập số thứ tự công việc cần xóa: ");
+        int stt = int.Parse(Console.ReadLine()) - 1;
+        if (stt < 0 || stt >= danhSachTodo.Count)
+        {
+            danhSachTodo.RemoveAt(stt);
+            Console.WriteLine("\nCông việc đã được xóa!");
+        }
+
+        static void TimKiemTheoDoUuTien()
+        { 
+            Console.Write("Nhập độ ưu tiên cần tìm (1-5): ");
+        int doUuTien = int.Parse(Console.ReadLine());
+        var ketQua = danhSachTodo.Where(t => t.DoUuTien == doUuTien).ToList();
+        Console.WriteLine("\nKết quả tìm kiếm:");
+        ketQua.ForEach(t => t.HienThiThongTin());
+    }
+
+    static void SapXepDanhSach()
+    {
+        danhSachTodo = danhSachTodo.OrderByDescending(t => t.DoUuTien).ToList();
+        Console.WriteLine("\nDanh sách đã được sắp xếp!");
     }
 }
